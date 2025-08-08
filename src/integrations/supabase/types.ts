@@ -14,6 +14,162 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          new_values: Json | null
+          old_values: Json | null
+          record_id: string | null
+          table_name: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      budget_categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          parent_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          parent_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          parent_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "budget_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "budget_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      budget_plans: {
+        Row: {
+          actual_amount: number | null
+          allocated_amount: number | null
+          approved_at: string | null
+          approved_by: string | null
+          budget_category_id: string
+          budget_year: number
+          created_at: string | null
+          created_by: string | null
+          id: string
+          institution_id: string
+          planned_amount: number
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_amount?: number | null
+          allocated_amount?: number | null
+          approved_at?: string | null
+          approved_by?: string | null
+          budget_category_id: string
+          budget_year: number
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          institution_id: string
+          planned_amount: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_amount?: number | null
+          allocated_amount?: number | null
+          approved_at?: string | null
+          approved_by?: string | null
+          budget_category_id?: string
+          budget_year?: number
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          institution_id?: string
+          planned_amount?: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "budget_plans_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_plans_budget_category_id_fkey"
+            columns: ["budget_category_id"]
+            isOneToOne: false
+            referencedRelation: "budget_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_plans_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_plans_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       budgets: {
         Row: {
           actual_amount: number | null
@@ -58,6 +214,120 @@ export type Database = {
           },
         ]
       }
+      cash_accounts: {
+        Row: {
+          account_name: string
+          account_number: string | null
+          account_type: string
+          bank_name: string | null
+          created_at: string | null
+          current_balance: number | null
+          id: string
+          institution_id: string
+          is_active: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          account_name: string
+          account_number?: string | null
+          account_type: string
+          bank_name?: string | null
+          created_at?: string | null
+          current_balance?: number | null
+          id?: string
+          institution_id: string
+          is_active?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          account_name?: string
+          account_number?: string | null
+          account_type?: string
+          bank_name?: string | null
+          created_at?: string | null
+          current_balance?: number | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cash_accounts_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cash_flows: {
+        Row: {
+          amount: number
+          cash_account_id: string
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string
+          id: string
+          reference_number: string | null
+          related_transaction_id: string | null
+          transaction_date: string | null
+          transaction_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          cash_account_id: string
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description: string
+          id?: string
+          reference_number?: string | null
+          related_transaction_id?: string | null
+          transaction_date?: string | null
+          transaction_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          cash_account_id?: string
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string
+          id?: string
+          reference_number?: string | null
+          related_transaction_id?: string | null
+          transaction_date?: string | null
+          transaction_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cash_flows_cash_account_id_fkey"
+            columns: ["cash_account_id"]
+            isOneToOne: false
+            referencedRelation: "cash_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_flows_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cash_flows_related_transaction_id_fkey"
+            columns: ["related_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institutions: {
         Row: {
           color: string | null
@@ -88,6 +358,116 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory_items: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          current_stock: number | null
+          id: string
+          institution_id: string
+          is_active: boolean | null
+          item_code: string
+          item_name: string
+          minimum_stock: number | null
+          unit: string
+          unit_price: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          current_stock?: number | null
+          id?: string
+          institution_id: string
+          is_active?: boolean | null
+          item_code: string
+          item_name: string
+          minimum_stock?: number | null
+          unit: string
+          unit_price?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          current_stock?: number | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean | null
+          item_code?: string
+          item_name?: string
+          minimum_stock?: number | null
+          unit?: string
+          unit_price?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_items_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_movements: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string
+          inventory_item_id: string
+          movement_type: string
+          notes: string | null
+          quantity: number
+          reference_number: string | null
+          total_value: number | null
+          transaction_date: string | null
+          unit_price: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          inventory_item_id: string
+          movement_type: string
+          notes?: string | null
+          quantity: number
+          reference_number?: string | null
+          total_value?: number | null
+          transaction_date?: string | null
+          unit_price?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          inventory_item_id?: string
+          movement_type?: string
+          notes?: string | null
+          quantity?: number
+          reference_number?: string | null
+          total_value?: number | null
+          transaction_date?: string | null
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_movements_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_movements_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -114,6 +494,211 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      report_templates: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          report_type: string
+          template_config: Json
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          report_type: string
+          template_config: Json
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          report_type?: string
+          template_config?: Json
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_templates_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spp_payments: {
+        Row: {
+          amount_paid: number
+          created_at: string | null
+          created_by: string | null
+          id: string
+          notes: string | null
+          payment_date: string | null
+          payment_method: string | null
+          payment_month: number
+          payment_year: number
+          receipt_number: string | null
+          spp_structure_id: string
+          student_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount_paid: number
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_month: number
+          payment_year: number
+          receipt_number?: string | null
+          spp_structure_id: string
+          student_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_month?: number
+          payment_year?: number
+          receipt_number?: string | null
+          spp_structure_id?: string
+          student_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spp_payments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spp_payments_spp_structure_id_fkey"
+            columns: ["spp_structure_id"]
+            isOneToOne: false
+            referencedRelation: "spp_structure"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spp_payments_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      spp_structure: {
+        Row: {
+          academic_year: string
+          class_grade: string
+          created_at: string | null
+          id: string
+          institution_id: string
+          is_active: boolean | null
+          monthly_amount: number
+          updated_at: string | null
+        }
+        Insert: {
+          academic_year: string
+          class_grade: string
+          created_at?: string | null
+          id?: string
+          institution_id: string
+          is_active?: boolean | null
+          monthly_amount: number
+          updated_at?: string | null
+        }
+        Update: {
+          academic_year?: string
+          class_grade?: string
+          created_at?: string | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean | null
+          monthly_amount?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spp_structure_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          address: string | null
+          class_grade: string
+          created_at: string | null
+          enrollment_date: string | null
+          full_name: string
+          id: string
+          institution_id: string
+          parent_name: string | null
+          parent_phone: string | null
+          status: string | null
+          student_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          class_grade: string
+          created_at?: string | null
+          enrollment_date?: string | null
+          full_name: string
+          id?: string
+          institution_id: string
+          parent_name?: string | null
+          parent_phone?: string | null
+          status?: string | null
+          student_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          class_grade?: string
+          created_at?: string | null
+          enrollment_date?: string | null
+          full_name?: string
+          id?: string
+          institution_id?: string
+          parent_name?: string | null
+          parent_phone?: string | null
+          status?: string | null
+          student_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "students_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       transactions: {
         Row: {
@@ -155,6 +740,63 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "transactions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transparency_reports: {
+        Row: {
+          content: Json
+          created_at: string | null
+          created_by: string | null
+          id: string
+          institution_id: string | null
+          is_published: boolean | null
+          published_at: string | null
+          report_period: string
+          report_type: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: Json
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          institution_id?: string | null
+          is_published?: boolean | null
+          published_at?: string | null
+          report_period: string
+          report_type: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          institution_id?: string | null
+          is_published?: boolean | null
+          published_at?: string | null
+          report_period?: string
+          report_type?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transparency_reports_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transparency_reports_institution_id_fkey"
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "institutions"
